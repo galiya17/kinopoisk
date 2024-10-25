@@ -49,4 +49,21 @@
   .modal-body img {
     max-width: 100%; 
   }
+
+  .toast-header{
+    gap: 5px;
+  }
+
+  .rounded {
+    width: 18px;
+    height: 18px;
+  }
+
+  .toaster-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    width: 100%;
+  }
 }
