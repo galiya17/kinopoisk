@@ -48,6 +48,7 @@ searchButtonElement.addEventListener('click', async () => {
             <div class="card-body">
                 <h5 class="card-title">${movie.Title}</h5>
                 <p class="card-text">${movie.Plot}</p>
+                <div class="d-flex">
                 <button
                     type="button"
                     class="btn btn-primary more-info-btn"
@@ -59,8 +60,16 @@ searchButtonElement.addEventListener('click', async () => {
                     data-country="${movie.Country}"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
-                    Подробнее
+                    More
                 </button>
+                <button
+                    type="button"
+                    class="btn btn-primary more-info-btn"
+                    id="add-fav-btn"
+                    >
+                    Add to favorites
+                </button>
+                </div>
             </div>
         </div>`;
 
@@ -101,3 +110,16 @@ function updateModal(poster, title, plot, runtime, director, country) {
       </div>
     `;
 }
+
+const addFavButton = document.getElementById('add-fav-btn');
+addFavButton.addEventListener('click', () => {
+
+    if (!movie) {
+        console.error("Movie data is undefined.");
+        return;
+    }
+
+    const favMoviesList = JSON.parse(localStorage.getItem('favMovies')) || []; // Retrieve existing favorites or start a new array
+    favMoviesList.push(movie);  // Add the new movie to the array
+    localStorage.setItem('favMovies', JSON.stringify(favMoviesList));  // Update localStorage with the new list
+});
