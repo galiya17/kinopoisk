@@ -10,8 +10,8 @@ const searchInputElement = document.querySelector('#movie-search-input');
 const searchButtonElement = document.querySelector('#movie-search-button');
 const searchResultsContainer = document.querySelector('.search-results');
 const spinnerElement = document.querySelector('#spinner');
-const errorToastElement = document.getElementById('errorToast'); // Элемент тостера
-const toast = new bootstrap.Toast(errorToastElement); // Инициализация тостера
+const errorToastElement = document.getElementById('errorToast'); 
+const toast = new bootstrap.Toast(errorToastElement);
 
 let movieTitleValue = '';
 let addedMovie = null;
@@ -20,7 +20,7 @@ searchButtonElement.addEventListener('click', async () => {
     movieTitleValue = searchInputElement.value;
 
     if (!movieTitleValue) {
-        alert("Введите название фильма!");
+        alert("Введите название фильма");
         return;
     }
 
@@ -34,7 +34,7 @@ searchButtonElement.addEventListener('click', async () => {
             return;
         }
 
-        if (addedMovie && addedMovie.Title.toLowerCase().includes(movieTitleValue.toLowerCase())) return;
+        if(addedMovie && addedMovie.Title.toLowerCase().includes(movieTitleValue.toLowerCase())) return
 
         console.log(movie);
 
@@ -73,7 +73,24 @@ searchButtonElement.addEventListener('click', async () => {
             </div>
         </div>`;
 
-        searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate);
+        searchResultsContainer.innerHTML = ''
+        searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate)
+        addedMovie = movie
+
+        const addFavButton = document.getElementById('add-fav-btn')
+        addFavButton.addEventListener('click', () => {
+
+        if(localStorage.getItem('favMovies') === null) {
+            const favMoviesList = []
+            favMoviesList.push(movie)
+            localStorage.setItem('favMovies', JSON.stringify(favMoviesList))
+            return
+        }
+
+        const favMoviesList = JSON.parse(localStorage.getItem('favMovies'))
+        favMoviesList.push(movie)
+        localStorage.setItem('favMovies', JSON.stringify(favMoviesList))
+    });
 
         const moreInfoButton = searchResultsContainer.querySelector('.more-info-btn');
         moreInfoButton.addEventListener('click', (event) => {
@@ -86,8 +103,6 @@ searchButtonElement.addEventListener('click', async () => {
             
             updateModal(poster, title, plot, runtime, director, country);
         });
-
-        addedMovie = movie;
 
     } catch (error) {
         console.error('Ошибка при поиске фильма:', error);
@@ -110,16 +125,3 @@ function updateModal(poster, title, plot, runtime, director, country) {
       </div>
     `;
 }
-
-const addFavButton = document.getElementById('add-fav-btn');
-addFavButton.addEventListener('click', () => {
-
-    if (!movie) {
-        console.error("Movie data is undefined.");
-        return;
-    }
-
-    const favMoviesList = JSON.parse(localStorage.getItem('favMovies')) || []; // Retrieve existing favorites or start a new array
-    favMoviesList.push(movie);  // Add the new movie to the array
-    localStorage.setItem('favMovies', JSON.stringify(favMoviesList));  // Update localStorage with the new list
-});
